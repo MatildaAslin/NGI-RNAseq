@@ -777,7 +777,7 @@ process genebody_coverage {
             if (filename.indexOf("geneBodyCoverage.curves.pdf") > 0)       "geneBodyCoverage/$filename"
             else if (filename.indexOf("geneBodyCoverage.r") > 0)           "geneBodyCoverage/rscripts/$filename"
             else if (filename.indexOf("geneBodyCoverage.txt") > 0)         "geneBodyCoverage/data/$filename"
-            else if (filename.indexOf("log.txt") > -1) false
+            else if (filename.indexOf("class.log") > -1) false
             else filename
         }
 
@@ -798,7 +798,7 @@ process genebody_coverage {
         -i ${bam_geneBodyCoverage.baseName}_subsamp_sorted.bam \\
         -o ${bam_geneBodyCoverage.baseName}.rseqc \\
         -r $bed12
-    mv log.txt ${bam_geneBodyCoverage.baseName}.rseqc.log.txt
+    mv class.log ${bam_geneBodyCoverage.baseName}.rseqc.log.txt
     """
 }
 
@@ -846,7 +846,7 @@ process markDuplicates {
         avail_mem = task.memory.toGiga()
     }
     """
-    picard MarkDuplicates \\
+    java -jar /sw/apps/bioinfo/picard/2.10.3/irma/picard.jar MarkDuplicates \\
         INPUT=$bam \\
         OUTPUT=${bam.baseName}.markDups.bam \\
         METRICS_FILE=${bam.baseName}.markDups_metrics.txt \\
